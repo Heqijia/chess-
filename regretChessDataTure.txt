@@ -1,0 +1,1 @@
+[RNBQKB_R, _PPP_PPP, P__nP___, ___N____, ________, ________, pppppppp, rnbqkb_r, b]
