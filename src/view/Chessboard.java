@@ -273,9 +273,9 @@ public class Chessboard extends JComponent {
                     //changeChessBoard(path1,path2);
 
                     //add(new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE));
-                    ChessComponent _=new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE);
-                    _.setVisible(true);
-                    putChessOnBoard(_);
+                    ChessComponent empty_=new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE);
+                    empty_.setVisible(true);
+                    putChessOnBoard(empty_);
                     //changeChessBoard(path1,path2);
                 }
 
@@ -287,9 +287,9 @@ public class Chessboard extends JComponent {
                     (regretChessDataHelp.get(4).charAt(j)=='p')){
                 remove(chessComponents[4][j]);
                 //changeChessBoard(path1,path2);
-                ChessComponent _=new EmptySlotComponent(new ChessboardPoint(4,j),calculatePoint(4,j),clickController,CHESS_SIZE);
-                _.setVisible(true);
-                putChessOnBoard(_);
+                ChessComponent empty_=new EmptySlotComponent(new ChessboardPoint(4,j),calculatePoint(4,j),clickController,CHESS_SIZE);
+                empty_.setVisible(true);
+                putChessOnBoard(empty_);
                 //changeChessBoard(path1,path2);
             }
         }
@@ -414,9 +414,9 @@ public class Chessboard extends JComponent {
                         putChessOnBoard(P);
                         break;
 
-                    case '_':ChessComponent _=new EmptySlotComponent(new ChessboardPoint(i,j),calculatePoint(i,j),clickController,CHESS_SIZE);
-                        _.setVisible(true);
-                        putChessOnBoard(_);
+                    case '_':ChessComponent empty_=new EmptySlotComponent(new ChessboardPoint(i,j),calculatePoint(i,j),clickController,CHESS_SIZE);
+                        empty_.setVisible(true);
+                        putChessOnBoard(empty_);
                         break;
 
                     case 'r':ChessComponent r=new RookChessComponent(new ChessboardPoint(i,j),calculatePoint(i,j),ChessColor.WHITE,clickController,CHESS_SIZE);
