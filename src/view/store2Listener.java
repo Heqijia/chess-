@@ -16,6 +16,5 @@ class store2Listener implements ActionListener {
         ChessGameFrameStore2.fatherFrame = menuFrame;
         ChessGameFrameStore2.main(null);
         new Music_PlayChess();
-        //   newGameOptionFrame.setVisible(false);
     }
 }
