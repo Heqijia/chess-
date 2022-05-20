@@ -1,7 +1,7 @@
 package model;
 
-import view.ChessboardPoint;
 import controller.ClickController;
+import view.ChessboardPoint;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,9 +24,13 @@ public abstract class ChessComponent extends JComponent {
      */
 
     private static final Dimension CHESSGRID_SIZE = new Dimension(1080 / 4 * 3 / 8, 1080 / 4 * 3 / 8);
-    private static final Color[] BACKGROUND_COLORS = {Color.WHITE, Color.BLACK};
-    private static final Color[] BACKGROUND_COLORS1 = {Color.GREEN, Color.YELLOW};
-    private static final Color[] BACKGROUND_COLORSTheme2 = {Color.GREEN, Color.BLACK};
+    private Color[] BACKGROUND_COLORS = {Color.WHITE, Color.BLACK};
+//    private static final Color[] BACKGROUND_COLORS1 = {Color.GREEN, Color.YELLOW};
+//    private static final Color[] BACKGROUND_COLORSTheme2 = {Color.GREEN, Color.BLACK};
+
+    private Image image1;
+    private Image image2;
+
     /**
      * handle click event
      */
@@ -51,15 +55,35 @@ public abstract class ChessComponent extends JComponent {
     private boolean entered;
     protected String name;
     private boolean attacked;
+    private boolean jiangjun;
+
+    public void setBACKGROUND_COLORS(Color[] BACKGROUND_COLORS) {
+        this.BACKGROUND_COLORS = BACKGROUND_COLORS;
+    }
+
+    public void setImage1(Image image1) {
+        this.image1 = image1;
+    }
+
+    public void setImage2(Image image2) {
+        this.image2 = image2;
+    }
 
     public boolean isAttacked() {
         return attacked;
+    }
+
+    public boolean isJiangjun() {
+        return jiangjun;
     }
 
     public void setAttacked(boolean attacked) {
         this.attacked = attacked;
     }
 
+    public void setJiangjun(boolean jiangjun) {
+        this.jiangjun = jiangjun;
+    }
 
     protected ChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor chessColor, ClickController clickController, int size) {
         enableEvents(AWTEvent.MOUSE_EVENT_MASK);
@@ -71,6 +95,7 @@ public abstract class ChessComponent extends JComponent {
         this.canBeMoved=false;
         this.entered=false;
         this.clickController = clickController;
+        this.jiangjun=false;
     }
 
     public ChessboardPoint getChessboardPoint() {
@@ -110,6 +135,9 @@ public abstract class ChessComponent extends JComponent {
         setLocation(point2);
         another.setChessboardPoint(chessboardPoint1);
         another.setLocation(point1);
+        repaint();
+//        System.out.println(BACKGROUND_COLORS[0]);
+//        System.out.println(BACKGROUND_COLORS[1]);
     }
 
     /**
@@ -155,14 +183,21 @@ public abstract class ChessComponent extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponents(g);
-//        System.out.printf("repaint chess [%d,%d]\n", chessboardPoint.getX(), chessboardPoint.getY());
         Color squareColor = BACKGROUND_COLORS[(chessboardPoint.getX() + chessboardPoint.getY()) % 2];
-        //squareColor = BACKGROUND_COLORS1[(chessboardPoint.getX() + chessboardPoint.getY()) % 2];
         g.setColor(squareColor);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
+//        System.out.println(BACKGROUND_COLORS[0]);
+//        System.out.println(BACKGROUND_COLORS[1]);
+        repaint();
+//        if((chessboardPoint.getX()+chessboardPoint.getY())%2==1) {
+//            g.drawImage(image1, 0, 0, this.getWidth(), this.getWidth(), null);
+//        }else {
+//            g.drawImage(image2,0,0,this.getWidth(),this.getWidth(),null);
+//        }
 
 
-//
+
+
         if (canBeMoved){
             g.setColor(Color.GRAY);
             g.drawRect(getWidth()/8,getHeight()/8,getWidth()*3/4,getHeight()*3/4);
@@ -179,6 +214,11 @@ public abstract class ChessComponent extends JComponent {
             g.setColor(Color.green);
             g.fillOval(21, 21, getWidth()/3 , getHeight()/3);
         }
+        if (isJiangjun()){
+            g.setColor(Color.RED);
+            g.fillRect(20,20,getWidth()/3,getHeight()/3);
+        }
+
     }
 
     public List<ChessboardPoint> getPointsCanMoveTo(ChessComponent[][] chessboard) {
@@ -187,14 +227,41 @@ public abstract class ChessComponent extends JComponent {
             for (int j = 0; j < 8; j++) {
                 ChessboardPoint destination = new ChessboardPoint(i,j);
                 if(canMoveTo(chessboard,destination)==true&&
-                chessboard[i][j].getChessColor()!=
-                        chessboard[chessboardPoint.getX()][chessboardPoint.getY()].chessColor) {
+                        chessboard[i][j].getChessColor()!= chessboard[chessboardPoint.getX()][chessboardPoint.getY()].chessColor) {
                     points.add(new ChessboardPoint(i,j));
                 }
             }
         }
         return points;
     }
+
+    public List<ChessboardPoint> jiangjunGJY(ChessComponent[][] chessboard){
+        List<ChessboardPoint> point = new ArrayList<>();
+        int x0=0;int y0=0;int judge1=-1;
+        for (int i=0;i<8;i++){
+            for (int j=0;j<8;j++){
+                if (chessComponents[i][j].getChessColor()!=chessboard[chessboardPoint.getX()][chessboardPoint.getY()].chessColor&&
+                        chessComponents[i][j].getChessColor()!=null&&
+                        (chessComponents[i][j].getName()=="K"||chessComponents[i][j].getName()=="k")){
+                    x0=i;y0=j;}
+            }
+        }
+        for (int i=0;i<8;i++){
+            for (int j=0;j<8;j++){
+                if (chessComponents[i][j].getChessColor()==chessboard[chessboardPoint.getX()][chessboardPoint.getY()].chessColor){
+                    List<ChessboardPoint> points = chessComponents[i][j].getPointsCanMoveTo(chessboard);
+                    if (points.contains(new ChessboardPoint(x0,y0))){
+                        judge1=1;
+                    }
+                }
+            }
+        }
+        if (judge1==1){
+            point.add(new ChessboardPoint(x0,y0));
+        }
+        return point;
+    }
+
 
 
 
