@@ -263,6 +263,6 @@ public abstract class ChessComponent extends JComponent {
     }
 
 
-//
+
 
 }
