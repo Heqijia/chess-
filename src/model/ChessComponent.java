@@ -207,8 +207,8 @@ public abstract class ChessComponent extends JComponent {
             g.setColor(Color.darkGray);
             g.fillRect(0, 0, this.getWidth(), this.getHeight());
         }else {
-//            g.setColor(squareColor);
-//            g.fillRect(0, 0, this.getWidth(), this.getHeight());
+//           g.setColor(squareColor);
+//           g.fillRect(0, 0, this.getWidth(), this.getHeight());
         }
         if(isAttacked()){// Highlights the model if selected.
             g.setColor(Color.green);
@@ -263,6 +263,6 @@ public abstract class ChessComponent extends JComponent {
     }
 
 
-
+//
 
 }
