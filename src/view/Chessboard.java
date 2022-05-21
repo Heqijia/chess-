@@ -31,7 +31,7 @@ public class Chessboard extends JComponent {
 
     private ChessComponent[][] chessComponents = new ChessComponent[CHESSBOARD_SIZE][CHESSBOARD_SIZE];
     private ChessColor currentColor = ChessColor.BLACK;
-   // private  int a=0;
+    // private  int a=0;
     //all chessComponents in this chessboard are shared only one model controller
     private final ClickController clickController = new ClickController(this);
     private final int CHESS_SIZE;
@@ -264,22 +264,22 @@ public class Chessboard extends JComponent {
 //        if (x2 == 2 && y2 == y1 - 1 && chessComponents[x1][y2].getName() == "P" &&
 //                chessComponents[x2][y2] instanceof EmptySlotComponent &&
 //                (this.getRegretChessDataTure().get(1)).charAt(y2) == 'P') {
-            for (int j=0;j<8;j++){
-                if((regretChessDataTure.get(2).charAt(j)=='_')&&
-                        (regretChessDataTure.get(3).charAt(j)=='P')&&
-                        (regretChessDataHelp.get(2).charAt(j)=='p')&&
-                        (regretChessDataHelp.get(3).charAt(j)=='P')){
-                    remove(chessComponents[3][j]);
-                    //changeChessBoard(path1,path2);
+        for (int j=0;j<8;j++){
+            if((regretChessDataTure.get(2).charAt(j)=='_')&&
+                    (regretChessDataTure.get(3).charAt(j)=='P')&&
+                    (regretChessDataHelp.get(2).charAt(j)=='p')&&
+                    (regretChessDataHelp.get(3).charAt(j)=='P')){
+                remove(chessComponents[3][j]);
+                //changeChessBoard(path1,path2);
 
-                    //add(new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE));
-                    ChessComponent empty_=new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE);
-                    empty_.setVisible(true);
-                    putChessOnBoard(empty_);
-                    //changeChessBoard(path1,path2);
-                }
-
+                //add(new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE));
+                ChessComponent _=new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE);
+                _.setVisible(true);
+                putChessOnBoard(_);
+                //changeChessBoard(path1,path2);
             }
+
+        }
         for (int j=0;j<8;j++){
             if((regretChessDataTure.get(5).charAt(j)=='_')&&
                     (regretChessDataTure.get(4).charAt(j)=='p')&&
@@ -287,9 +287,9 @@ public class Chessboard extends JComponent {
                     (regretChessDataHelp.get(4).charAt(j)=='p')){
                 remove(chessComponents[4][j]);
                 //changeChessBoard(path1,path2);
-                ChessComponent empty_=new EmptySlotComponent(new ChessboardPoint(4,j),calculatePoint(4,j),clickController,CHESS_SIZE);
-                empty_.setVisible(true);
-                putChessOnBoard(empty_);
+                ChessComponent _=new EmptySlotComponent(new ChessboardPoint(4,j),calculatePoint(4,j),clickController,CHESS_SIZE);
+                _.setVisible(true);
+                putChessOnBoard(_);
                 //changeChessBoard(path1,path2);
             }
         }
@@ -414,9 +414,9 @@ public class Chessboard extends JComponent {
                         putChessOnBoard(P);
                         break;
 
-                    case '_':ChessComponent empty_=new EmptySlotComponent(new ChessboardPoint(i,j),calculatePoint(i,j),clickController,CHESS_SIZE);
-                        empty_.setVisible(true);
-                        putChessOnBoard(empty_);
+                    case '_':ChessComponent _=new EmptySlotComponent(new ChessboardPoint(i,j),calculatePoint(i,j),clickController,CHESS_SIZE);
+                        _.setVisible(true);
+                        putChessOnBoard(_);
                         break;
 
                     case 'r':ChessComponent r=new RookChessComponent(new ChessboardPoint(i,j),calculatePoint(i,j),ChessColor.WHITE,clickController,CHESS_SIZE);
@@ -444,7 +444,7 @@ public class Chessboard extends JComponent {
                         putChessOnBoard(p);
                         break;
                     default:
-                        JOptionPane.showMessageDialog(this, "载入信息有误，请加载完成后自动退出！");
+                        JOptionPane.showMessageDialog(this, "棋子并非六种之一，棋子并非黑白棋子，请加载完成后自动退出！");
                         break;
                 }
                 chessComponents[i][j].setChessComponents(chessComponents);
@@ -454,9 +454,11 @@ public class Chessboard extends JComponent {
         if(chessData.get(8).equals("w")){
             currentColor=ChessColor.WHITE;
             jLabel.setText("        白方回合");
-        }else {
+        }else if(chessData.get(8).equals("b")){
             currentColor=ChessColor.BLACK;
             jLabel.setText("        黑方回合");
+        }else{
+            JOptionPane.showMessageDialog(this, "缺少行棋子方或行棋方错误，请加载完成后自动退出！");
         }
         //chessData.forEach(System.out::println);
     }
@@ -664,7 +666,7 @@ public class Chessboard extends JComponent {
             return false;
         }
     }
-public void changeChessBoard(String Image1,String Image2){
+    public void changeChessBoard(String Image1,String Image2){
         this.Image1=Image1;
         this.Image2=Image2;
         for(int i=0;i<8;i++){
@@ -679,10 +681,10 @@ public void changeChessBoard(String Image1,String Image2){
             }
         }
         repaint();
-}
+    }
 
     public void changeChessBoardColor(Color[] ChessBoardColor){
-       this.ChessBoardColor=ChessBoardColor;
+        this.ChessBoardColor=ChessBoardColor;
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
                 //chessComponents[i][j].setBACKGROUND_COLORS(ChessBoardColor);
@@ -696,7 +698,7 @@ public void changeChessBoard(String Image1,String Image2){
         ChessColor bb=currentColor;
         final int[] midTime = {50};
 //        timer=new Timer();
-        Timer timer = new Timer();
+        java.util.Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
                 midTime[0]--;
