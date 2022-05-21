@@ -273,9 +273,9 @@ public class Chessboard extends JComponent {
                 //changeChessBoard(path1,path2);
 
                 //add(new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE));
-                ChessComponent _=new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE);
-                _.setVisible(true);
-                putChessOnBoard(_);
+                ChessComponent empty_=new EmptySlotComponent(new ChessboardPoint(3,j),calculatePoint(3,j),clickController,CHESS_SIZE);
+                empty_.setVisible(true);
+                putChessOnBoard(empty_);
                 //changeChessBoard(path1,path2);
             }
 
@@ -287,15 +287,29 @@ public class Chessboard extends JComponent {
                     (regretChessDataHelp.get(4).charAt(j)=='p')){
                 remove(chessComponents[4][j]);
                 //changeChessBoard(path1,path2);
-                ChessComponent _=new EmptySlotComponent(new ChessboardPoint(4,j),calculatePoint(4,j),clickController,CHESS_SIZE);
-                _.setVisible(true);
-                putChessOnBoard(_);
+                ChessComponent empty_=new EmptySlotComponent(new ChessboardPoint(4,j),calculatePoint(4,j),clickController,CHESS_SIZE);
+                empty_.setVisible(true);
+                putChessOnBoard(empty_);
                 //changeChessBoard(path1,path2);
             }
         }
 
 
-
+        int K=-1;int k=-1;
+        for (int i=0;i<8;i++){
+            for (int j=0;j<8;j++){
+                if (chessComponents[i][j].getName()=="K"){
+                    K=1;
+                }if (chessComponents[i][j].getName()=="k"){
+                    k=1;
+                }
+            }
+        }
+        if (K!=1){
+            JOptionPane.showMessageDialog(this, "游戏结束，恭喜白方获得胜利！");
+        }if (k!=1){
+            JOptionPane.showMessageDialog(this, "游戏结束，恭喜黑方获得胜利！");
+        }
         if(jiangsi(chessComponents)){
             if(currentColor==ChessColor.BLACK){
                 JOptionPane.showMessageDialog(this, "游戏结束，恭喜白方获得胜利！");
@@ -414,9 +428,9 @@ public class Chessboard extends JComponent {
                         putChessOnBoard(P);
                         break;
 
-                    case '_':ChessComponent _=new EmptySlotComponent(new ChessboardPoint(i,j),calculatePoint(i,j),clickController,CHESS_SIZE);
-                        _.setVisible(true);
-                        putChessOnBoard(_);
+                    case '_':ChessComponent empty_=new EmptySlotComponent(new ChessboardPoint(i,j),calculatePoint(i,j),clickController,CHESS_SIZE);
+                        empty_.setVisible(true);
+                        putChessOnBoard(empty_);
                         break;
 
                     case 'r':ChessComponent r=new RookChessComponent(new ChessboardPoint(i,j),calculatePoint(i,j),ChessColor.WHITE,clickController,CHESS_SIZE);
