@@ -11,6 +11,10 @@ public class Main {
             mainFrame.setVisible(true);
         });
     }
+    public void fuck(){
+        for(int i=0;i<8;i++){
+            System.out.println("hqj是大笨蛋");
+        }
+    }
 }
-//试试
-//你好啊
+
