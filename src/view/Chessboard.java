@@ -444,7 +444,7 @@ public class Chessboard extends JComponent {
                         putChessOnBoard(p);
                         break;
                     default:
-                        JOptionPane.showMessageDialog(this, "载入信息有误，请加载完成后自动退出！");
+                        JOptionPane.showMessageDialog(this, "棋子并非六种之一，棋子并非黑白棋子，请加载完成后自动退出！");
                         break;
                 }
                 chessComponents[i][j].setChessComponents(chessComponents);
@@ -454,9 +454,11 @@ public class Chessboard extends JComponent {
         if(chessData.get(8).equals("w")){
             currentColor=ChessColor.WHITE;
             jLabel.setText("        白方回合");
-        }else {
+        }else if(chessData.get(8).equals("b")){
             currentColor=ChessColor.BLACK;
             jLabel.setText("        黑方回合");
+        }else{
+            JOptionPane.showMessageDialog(this, "缺少行棋子方或行棋方错误，请加载完成后自动退出！");
         }
         //chessData.forEach(System.out::println);
     }
