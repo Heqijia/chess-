@@ -16,5 +16,11 @@ public class Main {
             System.out.println("hqj是大笨蛋");
         }
     }
+    public void love(){
+        boolean loveYou = false;
+        while (loveYou==false){
+            System.out.println("java java I love you!");
+        }
+    }
 }
 
