@@ -2,11 +2,16 @@ package view;
 
 import controller.GameController;
 import model.ChessColor;
+
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 /**
@@ -112,25 +117,83 @@ public class ChessGameFrame extends JFrame {
             }
         });
 
-        JButton Load = new JButton("保存至存档二");
+        JButton Load = new JButton("加载存档");
         Load.setLocation(HEIGTH, HEIGTH / 10 + 115);
         Load.setSize(160, 48);
         Load.setFont(new Font("Rockwell", Font.BOLD, 16));
         add(Load);
 
        Load.addActionListener(e -> {
-           chessData= chessboard.StoreGame();
-           File file = new File("ChessData2.txt");
-           try {
-               FileOutputStream fos1=new FileOutputStream(file);
-               OutputStreamWriter dos1=new OutputStreamWriter(fos1);
-               dos1.write(String.valueOf(chessData));
-               dos1.close();
-           } catch (FileNotFoundException ex) {
-               ex.printStackTrace();
-           } catch (IOException ioException) {
-               ioException.printStackTrace();
+
+           JFileChooser fileChooser = new JFileChooser();
+           int option = fileChooser.showOpenDialog(null);
+           if(option == JFileChooser.APPROVE_OPTION) {
+               //File file = fileChooser.getSelectedFile();
+               File f=fileChooser.getSelectedFile();
+               String filename=f.getName();
+               if(filename.charAt(filename.length()-1)!='t'||
+                       filename.charAt(filename.length()-2)!='x'||
+                       filename.charAt(filename.length()-3)!='t'){
+                   JOptionPane.showMessageDialog(this, "文件格式错误！");
+               }
+               Stream<String> lines1 = null;
+               try {
+                   lines1 = Files.lines(Paths.get(filename));
+               }catch(FileNotFoundException ex){
+               }
+               catch (IOException ex) {
+                   ex.printStackTrace();
+               }
+               String[] m = {""};
+               lines1.forEach(ele -> {
+                   //System.out.println(ele);
+                   m[0] = m[0] +ele;
+               });
+               if(m[0].length()!=83){
+                   JOptionPane.showMessageDialog(this, "棋盘并非8*8，请加载完毕后自动退出！");
+               }
+               try {
+                   chessData.add(m[0].substring(1, 9));
+                   chessData.add(m[0].substring(11, 19));
+                   chessData.add(m[0].substring(21, 29));
+                   chessData.add(m[0].substring(31, 39));
+                   chessData.add(m[0].substring(41, 49));
+                   chessData.add(m[0].substring(51, 59));
+                   chessData.add(m[0].substring(61, 69));
+                   chessData.add(m[0].substring(71, 79));
+                   chessData.add(m[0].substring(81, 82));
+               }catch (IndexOutOfBoundsException ex){
+                   JOptionPane.showMessageDialog(this, "棋盘并非8*8，请加载完毕后自动退出！");
+               }
+               chessboard.initializeChess();
+               chessboard.loadGame(chessData);
+               repaint();
+               chessboard.time3();
+
+               //               try {
+//                   FileReader reader = new FileReader(file);
+//                   System.out.println(String.valueOf(reader));
+//               } catch (FileNotFoundException ex) {
+//                   ex.printStackTrace();
+//               }
+
+
            }
+
+
+
+//           chessData= chessboard.StoreGame();
+//           File file = new File("ChessData2.txt");
+//           try {
+//               FileOutputStream fos1=new FileOutputStream(file);
+//               OutputStreamWriter dos1=new OutputStreamWriter(fos1);
+//               dos1.write(String.valueOf(chessData));
+//               dos1.close();
+//           } catch (FileNotFoundException ex) {
+//               ex.printStackTrace();
+//           } catch (IOException ioException) {
+//               ioException.printStackTrace();
+//           }
         });
 
 
@@ -205,21 +268,49 @@ public class ChessGameFrame extends JFrame {
             this.setVisible(false);
         });
 
-        JButton changeBackground=new JButton("更改棋盘");
+        JButton changeBackground=new JButton("保存游戏");
         changeBackground.setLocation(HEIGTH, HEIGTH / 10 + 335);
         changeBackground.setSize(160, 48);
         changeBackground.setFont(new Font("Rockwell", Font.BOLD, 16));
         add(changeBackground);
         changeBackground.addActionListener(a->{
-            Object[] optionsBackground={"棋盘1","棋盘2","棋盘3"};
-            String BackGroundTheme=(String)JOptionPane.showInputDialog(null,"更换棋盘\n","更换",JOptionPane.PLAIN_MESSAGE,new ImageIcon("xx.png"),optionsBackground,"棋盘");
-            if (BackGroundTheme == "棋盘1") {
-//                String path1="images/加载页面2.jpeg";
-//                String path2="images/主题3.jpeg";
-//                chessboard.changeChessBoard(path1,path2);
-                Color[] COLOR1={Color.WHITE, Color.RED};
-                chessboard.changeChessBoardColor(COLOR1);
+            chessData=chessData= chessboard.StoreGame();
+//创建文件选择器
+            JFileChooser fileChooser = new JFileChooser();
+//后缀名过滤器
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("标签文件(*.txt)", "txt");
+            fileChooser.setFileFilter(filter);
+// 在容器上打开文件选择器
+            fileChooser.showSaveDialog(null);
+            File f=fileChooser.getSelectedFile();
+//字节输出流
+            FileOutputStream fos = null;
+            try {
+                String fname = f.getName();//从文件名输入框中获取文件名
+                //创建文件
+                File file=new File(fileChooser.getCurrentDirectory()+"/"+fname+".txt");
+                fos = new FileOutputStream(file);
+                //写入文件操作
+                String Datas = chessData.toString();
+                fos.write(Datas.getBytes());
+                fos.close();
+
+            } catch (IOException e1) {
+                System.err.println("IO异常");
+                e1.printStackTrace();
             }
+
+
+
+//            Object[] optionsBackground={"棋盘1","棋盘2","棋盘3"};
+//            String BackGroundTheme=(String)JOptionPane.showInputDialog(null,"更换棋盘\n","更换",JOptionPane.PLAIN_MESSAGE,new ImageIcon("xx.png"),optionsBackground,"棋盘");
+//            if (BackGroundTheme == "棋盘1") {
+////                String path1="images/加载页面2.jpeg";
+////                String path2="images/主题3.jpeg";
+////                chessboard.changeChessBoard(path1,path2);
+//                Color[] COLOR1={Color.WHITE, Color.RED};
+//                chessboard.changeChessBoardColor(COLOR1);
+//            }
         });
 
         JButton changeTheme=new JButton("更改背景");
