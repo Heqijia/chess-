@@ -134,7 +134,7 @@ public class MusicPlayer {
     }
     public void main(String[] args){
         //MusicPlayer A=new MusicPlayer();
-       // new MusicPlayer("musics/Nightbook.wav").over();
+        // new MusicPlayer("musics/Nightbook.wav").over();
         MusicPlayer a=new MusicPlayer("musics/Nightbook.wav");
         //System.out.println("+++++++++++++++++++++++++=");
         a.over();
